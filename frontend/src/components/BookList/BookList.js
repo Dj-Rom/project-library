@@ -4,16 +4,16 @@ import * as actiionCreators from '../../redux/books/actionCreators'
 import './BookList.css'
 const BookList = () => {
   // view from store only books
-  const books = useSelector((state) => state.books),
-    store = useStore(),
-    dispatch = useDispatch(),
-    // delete books and return new array ans send in store
-    deleteBookButton = (e) => {
-      e.preventDefault()
-      dispatch(actiionCreators.deleteBook(store.getState().books.filter((book) => (book.id !== (e.target.className)))))
+  const books = useSelector((state) => state.books)
+  const storeBooks = useStore()
+  const dispatch = useDispatch()
+  // delete books and return new array ans send in store
+  const deleteBookButton = (e) => {
+    e.preventDefault()
+    dispatch(actiionCreators.deleteBook(storeBooks.getState().books.filter((book) => (book.id !== (e.target.className)))))
 
 
-    }
+  }
   return (
     <div className="app-block block-list">
       <h2>Book List</h2>

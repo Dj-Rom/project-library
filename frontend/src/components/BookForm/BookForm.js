@@ -1,27 +1,27 @@
 import { useState } from "react"
-import { useDispatch, useStore } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { v4 as uuid } from 'uuid'
 import * as actiionCreators from './../../redux/books/actionCreators'
 import './BookForm.css'
 
 const BookForm = () => {
-  const [title, setTitle] = useState(''),
-    [author, setAuthor] = useState(''),
-    dispatch = useDispatch(),
-    store = useStore(),
-    handleSubmit = (e) => {
-      e.preventDefault();
-      if (title && author) {
-        const book = {
-          'author': author,
-          'title': title,
-          'id': uuid()
-        }
-        dispatch(actiionCreators.addBook(book))
-        setAuthor('')
-        setTitle('')
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const dispatch = useDispatch()
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (title && author) {
+      const book = {
+        'author': author,
+        'title': title,
+        'id': uuid()
       }
+      dispatch(actiionCreators.addBook(book))
+      setAuthor('')
+      setTitle('')
     }
+  }
 
 
 
