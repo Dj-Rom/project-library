@@ -1,33 +1,35 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { MdDelete, MdFavoriteBorder, MdOutlineFavorite } from 'react-icons/md'
-
+import { selectTitle } from '../../redux/slices/filterSlice'
 import * as actiionCreators from '../../redux/books/actionCreators'
 import './BookList.css'
 
 const BookList = () => {
   // view from store only books
   const books = useSelector((state) => state.books)
+  const titleFilter = useSelector(selectTitle)
   const dispatch = useDispatch()
+  const filterBooks = books.filter((book) => {
+    const mathTitle = book.title.toLowerCase().includes(titleFilter.toLowerCase())
+    return mathTitle
+  })
+  console.log(filterBooks);
   // delete books and return new array ans send in store
   const deleteBookButton = (id) => {
-    console.log(id)
-
     dispatch(actiionCreators.deleteBook(id))
   }
   function handleToggleFavorite(id) {
-    console.log(id)
-
     dispatch(actiionCreators.toggleFavorite(id))
   }
 
   return (
     <div className="app-block block-list">
       <h2>Book List</h2>
-      {!books.length ? (
+      {!filterBooks.length ? (
         <p>No books available</p>
       ) : (
         <ul>
-          {books.map((book, i) => (
+          {filterBooks.map((book, i) => (
             <li key={book.id}>
               <div className="book-info">
                 {++i}. {book.title} by <strong>{book.author}</strong>
