@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { MdDelete, MdFavoriteBorder, MdOutlineFavorite } from 'react-icons/md'
-import { selectTitle } from '../../redux/slices/filterSlice'
+import { selectTitle, selectAuthor } from '../../redux/slices/filterSlice'
 import * as actiionCreators from '../../redux/books/actionCreators'
 import './BookList.css'
 
@@ -8,12 +8,16 @@ const BookList = () => {
   // view from store only books
   const books = useSelector((state) => state.books)
   const titleFilter = useSelector(selectTitle)
+  const authorFilter = useSelector(selectAuthor)
   const dispatch = useDispatch()
   const filterBooks = books.filter((book) => {
     const mathTitle = book.title.toLowerCase().includes(titleFilter.toLowerCase())
     return mathTitle
+  }).filter((book) => {
+    const mathTitle = book.author.toLowerCase().includes(authorFilter.toLowerCase())
+    return mathTitle
   })
-  console.log(filterBooks);
+
   // delete books and return new array ans send in store
   const deleteBookButton = (id) => {
     dispatch(actiionCreators.deleteBook(id))
