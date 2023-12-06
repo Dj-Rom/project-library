@@ -7,9 +7,11 @@ const app = express();
 app.use(cors())
 
 app.get('/random-book', (req, res) => {
-    const randomIndex = (Math.round(Math.random() * data.length))
-    const randomBook = data[randomIndex]
-    res.json(randomBook)
+    setTimeout(() => {
+        const randomIndex = (Math.round(Math.random() * data.length))
+        const randomBook = data[randomIndex]
+        res.json(randomBook)
+    }, 10500);
 })
 
 const port = process.env.PORT || 4000

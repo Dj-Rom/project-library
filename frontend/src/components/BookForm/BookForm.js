@@ -2,7 +2,7 @@ import { useState } from "react"
 import { useDispatch } from 'react-redux'
 import createBookWithId from '../../utilites/createBookWithId'
 // import * as actiionCreators from './../../redux/books/actionCreators'
-import { ADD_BOOK, } from "../../redux/slices/booksSlice"
+import { ADD_BOOK, thunkFunctinon, fetchFunction } from "../../redux/slices/booksSlice"
 import booksData from '../../../src/data/books.json'
 import './BookForm.css'
 
@@ -27,23 +27,8 @@ const BookForm = () => {
       dispatch(ADD_BOOK(createBookWithId(randomBook, 'Random')))
     }
 
-  async function handleAddRandomBookWithAPI(data) {
-
-    try {
-      const response = await fetch("http://localhost:4000/random-book");
-      const randomBook = await response.json();
-      if (randomBook.title && randomBook.author && randomBook) {
-        dispatch(ADD_BOOK(createBookWithId(randomBook, 'API')))
-
-      }
-    } catch {
-      alert(Error());
-
-    }
-
-
-
-
+  function handleAddRandomBookWithAPI() {
+    dispatch(fetchFunction())
   }
 
 
