@@ -46,7 +46,7 @@ const BookList = () => {
           {filterBooks.map((book, i) => (
             <li key={book.id}>
               <div className="book-info">
-                {++i}. {hightlightMath(book.title, titleFilter)} by <strong>{hightlightMath(book.author, authorFilter)}</strong>
+                {++i}. {hightlightMath(book.title, titleFilter)} by <strong>{hightlightMath(book.author, authorFilter)}</strong> {book.source}
               </div>
               <div className="book-actions">
                 <span onClick={() => {
