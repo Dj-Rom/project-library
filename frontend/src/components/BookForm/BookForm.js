@@ -1,7 +1,8 @@
 import { useState } from "react"
 import { useDispatch } from 'react-redux'
 import createBookWithId from '../../utilites/createBookWithId'
-import * as actiionCreators from './../../redux/books/actionCreators'
+// import * as actiionCreators from './../../redux/books/actionCreators'
+import { ADD_BOOK, } from "../../redux/slices/booksSlice"
 import booksData from '../../../src/data/books.json'
 import './BookForm.css'
 
@@ -16,7 +17,7 @@ const BookForm = () => {
       const book = {
         title, author
       }
-      dispatch(actiionCreators.addBook(createBookWithId(book)))
+      dispatch(ADD_BOOK(createBookWithId(book)))
       setAuthor('')
       setTitle('')
     }
@@ -25,7 +26,7 @@ const BookForm = () => {
       const randomBook = (data[Math.round(Math.random() * data.length)])
 
 
-      dispatch(actiionCreators.addBook(createBookWithId(randomBook)))
+      dispatch(ADD_BOOK(createBookWithId(randomBook)))
 
     }
 

@@ -1,30 +1,40 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { MdDelete, MdFavoriteBorder, MdOutlineFavorite } from 'react-icons/md'
-import { selectTitle, selectAuthor } from '../../redux/slices/filterSlice'
-import * as actiionCreators from '../../redux/books/actionCreators'
+import { selectTitle, selectAuthor, selectOnlyFavorite } from '../../redux/slices/filterSlice'
+import { DELETE_BOOK, TOGGLE_FAVORITE, setBooks } from '../../redux/slices/booksSlice'
+// import * as actiionCreators from '../../redux/books/actionCreators'
 import './BookList.css'
 
 const BookList = () => {
-  // view from store only books
-  const books = useSelector((state) => state.books)
+
+  const books = useSelector(setBooks)
   const titleFilter = useSelector(selectTitle)
   const authorFilter = useSelector(selectAuthor)
+  const onlyFavoriteFilter = useSelector(selectOnlyFavorite)
   const dispatch = useDispatch()
   const filterBooks = books.filter((book) => {
     const mathTitle = book.title.toLowerCase().includes(titleFilter.toLowerCase())
-    return mathTitle
-  }).filter((book) => {
-    const mathTitle = book.author.toLowerCase().includes(authorFilter.toLowerCase())
-    return mathTitle
+    const mathAuthor = book.author.toLowerCase().includes(authorFilter.toLowerCase())
+    const mathFavorite = onlyFavoriteFilter ? book.isFavorite : true
+    return mathTitle && mathAuthor && mathFavorite
   })
 
-  // delete books and return new array ans send in store
+  const hightlightMath = (text, filter) => {
+    if (!filter) return text
+    const regex = new RegExp(`(${filter})`, 'gi')
+    return text.split(regex).map((substring, i) => {
+      if (substring.toLowerCase() === filter.toLowerCase()) {
+        return (<span key={i} className='highlight'>{substring}</span>)
+      } return substring
+    })
+  }
   const deleteBookButton = (id) => {
-    dispatch(actiionCreators.deleteBook(id))
+    dispatch(DELETE_BOOK(id))
   }
-  function handleToggleFavorite(id) {
-    dispatch(actiionCreators.toggleFavorite(id))
+  const handleToggleFavorite = (id) => {
+    dispatch(TOGGLE_FAVORITE(id))
   }
+
 
   return (
     <div className="app-block block-list">
@@ -36,13 +46,12 @@ const BookList = () => {
           {filterBooks.map((book, i) => (
             <li key={book.id}>
               <div className="book-info">
-                {++i}. {book.title} by <strong>{book.author}</strong>
+                {++i}. {hightlightMath(book.title, titleFilter)} by <strong>{hightlightMath(book.author, authorFilter)}</strong>
               </div>
               <div className="book-actions">
-                <span
-                  onClick={() => {
-                    handleToggleFavorite(book.id)
-                  }}
+                <span onClick={() => {
+                  handleToggleFavorite(book.id)
+                }}
                 >
                   {book.isFavorite ? (
                     <MdOutlineFavorite className="star-icon" />
