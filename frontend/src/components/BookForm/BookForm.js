@@ -1,8 +1,8 @@
 import { useState } from "react"
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import createBookWithId from '../../utilites/createBookWithId'
-// import * as actiionCreators from './../../redux/books/actionCreators'
-import { ADD_BOOK, fetchFunction } from "../../redux/slices/booksSlice"
+import { FaSpinner } from 'react-icons/fa'
+import { ADD_BOOK, fetchFunction, selectedIsLoading } from "../../redux/slices/booksSlice"
 import { setError } from "../../redux/slices/errorSlice"
 import booksData from '../../../src/data/books.json'
 import './BookForm.css'
@@ -10,6 +10,7 @@ import './BookForm.css'
 const BookForm = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
+  const isLoading = useSelector(selectedIsLoading)
   const dispatch = useDispatch()
 
   const handleSubmit = (e) => {
@@ -28,12 +29,9 @@ const BookForm = () => {
       dispatch(ADD_BOOK(createBookWithId(randomBook, 'Random')))
     }
 
-  function handleAddRandomBookWithAPI() {
-    dispatch(fetchFunction())
+  async function handleAddRandomBookWithAPI() {
+    await dispatch(fetchFunction("http://localhost:4000/random-book-timeOut"))
   }
-
-
-
   return (
     <div className="app-block book-form">
       <h2>Add a new Book</h2>
@@ -44,7 +42,7 @@ const BookForm = () => {
           <input type="text" id="author" maxLength="18" value={author} onChange={(e) => setAuthor(e.target.value)} /></div>
         <button type="submit">Add Book</button>
         <button type="button" onClick={() => handleAddRandomBook(booksData)}>Add Random</button>
-        <button type="button" onClick={() => handleAddRandomBookWithAPI()}>Add Random with API</button>
+        <button type="button" disabled={isLoading} onClick={() => handleAddRandomBookWithAPI()}>{isLoading ? <><span>Loading.... </span><FaSpinner className="spinner" /></> : <span>Add Random with API</span>}</button>
 
       </form>
 
