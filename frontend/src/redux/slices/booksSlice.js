@@ -22,12 +22,12 @@ const booksSlice = createSlice({
     initialState,
     reducers: {
         ADD_BOOK: (state, action) => {
-            return [...state.books, action.payload]
+            state.books.push(action.payload)
         }, DELETE_BOOK: (state, action) => {
-            return state.books.filter((book) => book.id !== action.payload)
+            return { ...state, books: state.books.filter((book) => book.id !== action.payload) }
         },
         TOGGLE_FAVORITE: (state, action) => {
-            return state.books.map((book) => book.id === action.payload ? { ...book, isFavorite: !book.isFavorite } : book)
+            return { ...state, books: state.books.map((book) => book.id === action.payload ? { ...book, isFavorite: !book.isFavorite } : book) }
         },
     },
     extraReducers: {

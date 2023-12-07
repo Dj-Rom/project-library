@@ -30,7 +30,7 @@ const BookForm = () => {
     }
 
   async function handleAddRandomBookWithAPI() {
-    await dispatch(fetchFunction("http://localhost:4000/random-book-timeOut"))
+    await dispatch(fetchFunction("http://localhost:4000/random-book"))
   }
   return (
     <div className="app-block book-form">
